@@ -24,3 +24,43 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom hunting-themed styles - using standard Tailwind approach */
+@layer base {
+  body {
+    color: rgb(44, 36, 22);
+    line-height: 1.6;
+  }
+}
+
+@layer utilities {
+  .hunting-hero-bg {
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23e8d5b7"/><stop offset="100%" style="stop-color:%23f5f3f0"/></linearGradient></defs><rect width="1200" height="400" fill="url(%23sky)"/><path d="M0 250 Q300 200 600 220 T1200 200 L1200 400 L0 400 Z" fill="%236b8e6b" opacity="0.8"/><path d="M0 300 Q400 250 800 280 L1200 250 L1200 400 L0 400 Z" fill="%23556b55" opacity="0.9"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+  
+  /* Logo glow effect */
+  .logo-glow {
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+    }
+    to {
+      filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
+    }
+  }
+  
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+}
