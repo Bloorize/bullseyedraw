@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { useHuntingCalculator } from '@/hooks/useHuntingCalculator';
 import { DataUtils } from '@/lib/dataUtils';
 import { huntingData } from '@/lib/huntingData';
-import { AISettings } from '@/components/AISettings';
 import { AIChat } from '@/components/AIChat';
 import type { State, Species, HuntStats } from '@/types/hunting';
 
@@ -24,16 +23,11 @@ export default function HuntingCalculator() {
     findStrategicOpportunities,
     updateCalculatorForm,
     updateStrategyForm,
-    initializeAI,
     aiService,
     useAI
   } = useHuntingCalculator();
 
   const [activeTab, setActiveTab] = useState<'calculator' | 'strategy'>('calculator');
-
-  const handleApiKeySet = useCallback((apiKey: string) => {
-    initializeAI(apiKey);
-  }, [initializeAI]);
 
   const handleCalculatorSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -124,7 +118,6 @@ export default function HuntingCalculator() {
                   Strategy
                 </button>
               </nav>
-              <AISettings onApiKeySet={handleApiKeySet} />
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { huntingData, generateDrawOdds } from '@/lib/huntingData';
 import { DataUtils } from '@/lib/dataUtils';
 import { HuntingAIService } from '@/lib/aiService';
@@ -12,6 +12,9 @@ import type {
   HuntingFormData,
   DrawOddsResult
 } from '@/types/hunting';
+
+// Use environment variable for OpenAI API key
+const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
 
 const DEFAULT_CALCULATOR_FORM: CalculatorForm = {
   state: '',
@@ -35,6 +38,14 @@ export function useHuntingCalculator() {
   const [aiService, setAiService] = useState<HuntingAIService | null>(null);
   const [useAI, setUseAI] = useState(false);
   
+  // Auto-initialize AI service with environment variable
+  useEffect(() => {
+    if (OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
+      setAiService(new HuntingAIService({ apiKey: OPENAI_API_KEY }));
+      setUseAI(true);
+    }
+  }, []);
+
   const [calculatorForm, setCalculatorForm] = useState<CalculatorForm>({
     state: '',
     species: '',
@@ -62,17 +73,6 @@ export function useHuntingCalculator() {
   const [strategicOpportunities, setStrategicOpportunities] = useState<StrategicOpportunity[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // Initialize AI service when API key is provided
-  const initializeAI = useCallback((apiKey: string) => {
-    if (apiKey) {
-      setAiService(new HuntingAIService({ apiKey }));
-      setUseAI(true);
-    } else {
-      setAiService(null);
-      setUseAI(false);
-    }
-  }, []);
 
   // Get available units based on state and species
   const availableUnits = useMemo(() => {
@@ -133,14 +133,7 @@ export function useHuntingCalculator() {
             avgSize: `${Math.floor(Math.random() * 50) + 250}"`,
             difficulty: ['Easy', 'Moderate', 'Hard'][Math.floor(Math.random() * 3)]
           },
-          recommendations: Array.isArray(aiAnalysis.recommendations) ? 
-            aiAnalysis.recommendations.map(rec => 
-              typeof rec === 'string' ? {
-                type: 'info',
-                title: 'AI Recommendation',
-                text: rec
-              } : rec
-            ) : [],
+          recommendations: aiAnalysis.recommendations,
           alternativeOptions: aiAnalysis.alternativeOptions
         });
       } else {
@@ -312,7 +305,6 @@ export function useHuntingCalculator() {
     findStrategicOpportunities,
     updateCalculatorForm,
     updateStrategyForm,
-    initializeAI,
     aiService,
     useAI
   };
