@@ -133,7 +133,14 @@ export function useHuntingCalculator() {
             avgSize: `${Math.floor(Math.random() * 50) + 250}"`,
             difficulty: ['Easy', 'Moderate', 'Hard'][Math.floor(Math.random() * 3)]
           },
-          recommendations: aiAnalysis.recommendations,
+          recommendations: Array.isArray(aiAnalysis.recommendations) ? 
+            aiAnalysis.recommendations.map(rec => 
+              typeof rec === 'string' ? {
+                type: 'info',
+                title: 'AI Recommendation',
+                text: rec
+              } : rec
+            ) : [],
           alternativeOptions: aiAnalysis.alternativeOptions
         });
       } else {
@@ -160,11 +167,25 @@ export function useHuntingCalculator() {
               avgSize: odds.stats.avgSize || '0"',
               difficulty: odds.stats.difficulty || 'Moderate'
             },
-            recommendations: DataUtils.generateRecommendations(
-              odds.odds,
-              calculatorForm.points,
-              calculatorForm.species
-            ),
+            recommendations: [
+              {
+                type: odds.odds >= 80 ? 'success' :
+                      odds.odds >= 50 ? 'info' :
+                      odds.odds >= 25 ? 'warning' : 'danger',
+                title: odds.odds >= 80 ? 'Excellent Draw Odds' :
+                       odds.odds >= 50 ? 'Good Draw Odds' :
+                       odds.odds >= 25 ? 'Moderate Draw Odds' : 'Low Draw Odds',
+                text: odds.odds >= 80 ? 'You have very high chances of drawing this tag!' :
+                      odds.odds >= 50 ? 'You have decent chances of drawing this tag.' :
+                      odds.odds >= 25 ? 'This is a competitive hunt. Consider backup options.' :
+                      'This is a very competitive hunt. Consider building more points.'
+              },
+              {
+                type: 'info',
+                title: 'Points Analysis',
+                text: `Typical successful applicants have ${odds.stats.pointsNeeded || '3-5'} points.`
+              }
+            ]
           });
         } else {
           throw new Error('No historical data available for this hunt combination');
@@ -222,6 +243,7 @@ export function useHuntingCalculator() {
                     huntType,
                     odds: drawOdds.odds,
                     maxOdds: drawOdds.odds + 10,
+                    minPoints: strategyForm.myPoints,
                     pointsNeeded: strategyForm.myPoints,
                     quality: unitData.quality,
                     trend: '↑',

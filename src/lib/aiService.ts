@@ -1,4 +1,4 @@
-import { HuntingFormData, DrawOddsResult, StrategicOpportunity } from '@/types/hunting';
+import { HuntingFormData, DrawOddsResult, StrategicOpportunity, Recommendation } from '@/types/hunting';
 
 interface AIConfig {
   apiKey: string;
@@ -11,7 +11,7 @@ interface AIDrawAnalysis {
   confidence: number;
   reasoning: string;
   historicalContext: string;
-  recommendations: string[];
+  recommendations: Recommendation[];
   alternativeOptions: Array<{
     state: string;
     unit: string;
@@ -180,7 +180,13 @@ export class HuntingAIService {
         "confidence": <number 0-100>,
         "reasoning": "<detailed explanation>",
         "historicalContext": "<5-year trend analysis>",
-        "recommendations": ["<specific advice>", ...],
+        "recommendations": [
+          {
+            "type": "success|warning|danger|info",
+            "title": "<recommendation title>",
+            "text": "<detailed recommendation>"
+          }
+        ],
         "alternativeOptions": [
           {
             "state": "<state>",
@@ -234,7 +240,12 @@ export class HuntingAIService {
       confidence: Math.max(0, Math.min(100, Number(analysis.confidence) || 70)),
       reasoning: analysis.reasoning || 'Analysis based on current trends',
       historicalContext: analysis.historicalContext || 'Historical data unavailable',
-      recommendations: Array.isArray(analysis.recommendations) ? analysis.recommendations : [],
+      recommendations: Array.isArray(analysis.recommendations) ? 
+        analysis.recommendations.map((rec: string) => ({
+          type: 'info',
+          title: 'AI Recommendation',
+          text: rec
+        })) : [],
       alternativeOptions: Array.isArray(analysis.alternativeOptions) ? 
         analysis.alternativeOptions.map((opt: any) => ({
           state: opt.state || '',
@@ -254,6 +265,7 @@ export class HuntingAIService {
       huntType: rec.huntType,
       odds: Math.max(0, Math.min(100, Number(rec.odds) || 0)),
       maxOdds: Math.max(0, Math.min(100, Number(rec.odds) || 0)) + 10,
+      minPoints: rec.minPoints || rec.pointsNeeded || 0,
       pointsNeeded: rec.pointsNeeded || 0,
       quality: rec.quality || 'good',
       trend: rec.trend || 'stable',

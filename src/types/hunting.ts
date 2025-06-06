@@ -36,9 +36,18 @@ export interface ApplicationInfo {
   huntSeasons: Record<string, string>;
 }
 
+export interface PointStrategy {
+  name: string;
+  description: string;
+  riskLevel: 'low' | 'medium' | 'high';
+  recommendedPoints: string;
+  targetOdds: string;
+  huntQuality: string[];
+}
+
 export interface HuntingData {
   states: Record<string, State>;
-  drawOdds: Record<string, DrawOdds>;
+  drawOdds: Record<string, DrawOddsData>;
   huntStats: Record<string, HuntStats>;
   applicationInfo: Record<string, ApplicationInfo>;
 }
@@ -64,7 +73,7 @@ export interface StrategyForm {
 export interface CalculationResult {
   odds: number;
   stats: HuntStats | Record<string, any>;
-  recommendations: string[];
+  recommendations: Recommendation[];
   confidence?: number;
   reasoning?: string;
   historicalContext?: string;
@@ -91,7 +100,7 @@ export interface DrawOddsResult {
   confidence?: number;
   reasoning?: string;
   historicalContext?: string;
-  recommendations: string[];
+  recommendations: Recommendation[];
   alternativeOptions?: Array<{
     state: string;
     unit: string;
@@ -108,6 +117,7 @@ export interface StrategicOpportunity {
   huntType: string;
   odds: number;
   maxOdds: number;
+  minPoints: number;
   pointsNeeded: number;
   quality: string;
   trend: string;
@@ -118,4 +128,42 @@ export interface StrategicOpportunity {
   drawStrategy?: string;
   backupOptions?: string[];
   timing?: string;
+}
+
+export interface CalculatorFormData {
+  state: string;
+  species: string;
+  unit: string;
+  season: string;
+  residency: 'resident' | 'nonresident';
+  points: number;
+}
+
+export interface StrategyCriteria {
+  states?: string[];
+  species?: string[];
+  huntTypes?: string[];
+  maxPoints?: number;
+  minOdds?: number;
+}
+
+export interface DrawOddsData {
+  [points: number]: number;
+}
+
+export interface HuntUnit {
+  name: string;
+  quality: string;
+  access: string;
+}
+
+export interface Recommendation {
+  type: 'success' | 'warning' | 'danger' | 'info';
+  title: string;
+  text: string;
+}
+
+export interface ChartDataPoint {
+  pointLevel: string;
+  odds: number;
 } 

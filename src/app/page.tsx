@@ -385,11 +385,22 @@ export default function HuntingCalculator() {
                 {calculationResult.recommendations.length > 0 && (
                   <div>
                     <h4 className="font-semibold text-stone-800 mb-2">Recommendations:</h4>
-                    <ul className="list-disc list-inside space-y-1">
+                    <div className="space-y-2">
                       {calculationResult.recommendations.map((rec, idx) => (
-                        <li key={idx} className="text-stone-600">{rec}</li>
+                        <div 
+                          key={idx} 
+                          className={`p-3 rounded-lg ${
+                            rec.type === 'success' ? 'bg-green-50 text-green-800' :
+                            rec.type === 'warning' ? 'bg-yellow-50 text-yellow-800' :
+                            rec.type === 'danger' ? 'bg-red-50 text-red-800' :
+                            'bg-blue-50 text-blue-800'
+                          }`}
+                        >
+                          <div className="font-medium mb-1">{rec.title}</div>
+                          <div>{rec.text}</div>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
 

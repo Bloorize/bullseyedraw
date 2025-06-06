@@ -69,8 +69,8 @@ export class DataUtils {
       if (criteria.states && criteria.states.length > 0 && !criteria.states.includes(opp.state)) return false;
       if (criteria.species && criteria.species.length > 0 && !criteria.species.includes(opp.species)) return false;
       if (criteria.huntTypes && criteria.huntTypes.length > 0 && !criteria.huntTypes.includes(opp.huntType)) return false;
-      if (criteria.maxPoints !== undefined && opp.minPoints > criteria.maxPoints) return false;
-      if (criteria.minOdds !== undefined && opp.maxOdds < criteria.minOdds) return false;
+      if (criteria.maxPoints !== undefined && opp.pointsNeeded > criteria.maxPoints) return false;
+      if (criteria.minOdds !== undefined && opp.odds < criteria.minOdds) return false;
       return true;
     });
   }
