@@ -1,212 +1,283 @@
+'use client';
+
 import { useState, useCallback, useMemo } from 'react';
+import { huntingData, generateDrawOdds } from '@/lib/huntingData';
 import { DataUtils } from '@/lib/dataUtils';
+import { HuntingAIService } from '@/lib/aiService';
 import type { 
-  CalculatorFormData, 
+  CalculatorForm, 
+  StrategyForm, 
   CalculationResult, 
-  StrategyFormData,
   StrategicOpportunity,
-  StrategyCriteria 
+  HuntingFormData,
+  DrawOddsResult
 } from '@/types/hunting';
 
-export const useHuntingCalculator = () => {
-  const [calculatorForm, setCalculatorForm] = useState<Partial<CalculatorFormData>>({
-    species: '',
+const DEFAULT_CALCULATOR_FORM: CalculatorForm = {
+  state: '',
+  species: '',
+  unit: '',
+  huntType: '',
+  residency: 'resident',
+  points: 0
+};
+
+const DEFAULT_STRATEGY_FORM: StrategyForm = {
+  targetSpecies: [],
+  targetStates: [],
+  myPoints: 0,
+  strategy: 'balanced',
+  minOdds: 0,
+  maxPoints: 0
+};
+
+export function useHuntingCalculator() {
+  const [aiService, setAiService] = useState<HuntingAIService | null>(null);
+  const [useAI, setUseAI] = useState(false);
+  
+  const [calculatorForm, setCalculatorForm] = useState<CalculatorForm>({
     state: '',
+    species: '',
     unit: '',
-    season: '',
-    points: 5,
-    residency: 'resident'
+    huntType: '',
+    residency: 'resident',
+    points: 0,
   });
 
-  const [strategyForm, setStrategyForm] = useState<Partial<StrategyFormData>>({
-    targetSpecies: [],
+  const [strategyForm, setStrategyForm] = useState<StrategyForm>({
     targetStates: [],
-    huntTypes: [],
-    myPoints: 5,
-    minOdds: 30,
-    strategy: 'balanced'
+    targetSpecies: [],
+    myPoints: 0,
+    minOdds: 20,
+    strategy: 'balanced',
+    maxPoints: 0
   });
 
-  const [calculationResult, setCalculationResult] = useState<CalculationResult | null>(null);
+  const [calculationResult, setCalculationResult] = useState<CalculationResult>({
+    odds: 0,
+    stats: {},
+    recommendations: [],
+  });
+
   const [strategicOpportunities, setStrategicOpportunities] = useState<StrategicOpportunity[]>([]);
   const [isCalculating, setIsCalculating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Calculate draw odds
+  // Initialize AI service when API key is provided
+  const initializeAI = useCallback((apiKey: string) => {
+    if (apiKey) {
+      setAiService(new HuntingAIService({ apiKey }));
+      setUseAI(true);
+    } else {
+      setAiService(null);
+      setUseAI(false);
+    }
+  }, []);
+
+  // Get available units based on state and species
+  const availableUnits = useMemo(() => {
+    if (!calculatorForm.state || !calculatorForm.species) return [];
+    
+    const stateData = huntingData.states[calculatorForm.state];
+    if (!stateData) return [];
+    
+    const speciesData = stateData.species[calculatorForm.species];
+    if (!speciesData) return [];
+    
+    return Object.keys(speciesData.units);
+  }, [calculatorForm.state, calculatorForm.species]);
+
+  // Get available hunt types based on state, species, and unit
+  const availableHuntTypes = useMemo(() => {
+    if (!calculatorForm.state || !calculatorForm.species || !calculatorForm.unit) return [];
+    
+    const stateData = huntingData.states[calculatorForm.state];
+    if (!stateData) return [];
+    
+    const speciesData = stateData.species[calculatorForm.species];
+    if (!speciesData) return [];
+    
+    return speciesData.huntTypes;
+  }, [calculatorForm.state, calculatorForm.species, calculatorForm.unit]);
+
   const calculateDrawOdds = useCallback(async () => {
     setIsCalculating(true);
     setError(null);
 
     try {
-      // Validate form data
-      const validation = DataUtils.validateDrawForm(calculatorForm);
-      if (!validation.isValid) {
-        setError(validation.error || 'Please fill in all required fields');
-        return;
+      if (useAI && aiService) {
+        // Use AI for calculation
+        const formData: HuntingFormData = {
+          state: calculatorForm.state,
+          species: calculatorForm.species,
+          unit: calculatorForm.unit,
+          huntType: calculatorForm.huntType,
+          residency: calculatorForm.residency,
+          points: calculatorForm.points
+        };
+
+        const aiAnalysis = await aiService.analyzeDrawOdds(formData);
+        
+        setCalculationResult({
+          odds: aiAnalysis.odds,
+          confidence: aiAnalysis.confidence,
+          reasoning: aiAnalysis.reasoning,
+          historicalContext: aiAnalysis.historicalContext,
+          stats: {
+            tags: Math.floor(Math.random() * 200) + 50,
+            applicants: Math.floor(Math.random() * 5000) + 1000,
+            pointsNeeded: `${calculatorForm.points}-${calculatorForm.points + 2}`,
+            trend: '↑',
+            quality: 'High',
+            success: `${aiAnalysis.odds}%`,
+            avgSize: `${Math.floor(Math.random() * 50) + 250}"`,
+            difficulty: ['Easy', 'Moderate', 'Hard'][Math.floor(Math.random() * 3)]
+          },
+          recommendations: aiAnalysis.recommendations,
+          alternativeOptions: aiAnalysis.alternativeOptions
+        });
+      } else {
+        // Use existing dummy data calculation
+        const odds = generateDrawOdds(
+          calculatorForm.state,
+          calculatorForm.species,
+          calculatorForm.unit,
+          calculatorForm.huntType,
+          calculatorForm.residency,
+          calculatorForm.points
+        );
+
+        if (odds) {
+          setCalculationResult({
+            odds: odds.odds,
+            stats: {
+              tags: odds.stats.tags || 0,
+              applicants: odds.stats.applicants || 0,
+              pointsNeeded: odds.stats.pointsNeeded || '0',
+              trend: odds.stats.trend || '↑',
+              quality: odds.stats.quality || 'Good',
+              success: odds.stats.success || '0%',
+              avgSize: odds.stats.avgSize || '0"',
+              difficulty: odds.stats.difficulty || 'Moderate'
+            },
+            recommendations: DataUtils.generateRecommendations(
+              odds.odds,
+              calculatorForm.points,
+              calculatorForm.species
+            ),
+          });
+        } else {
+          throw new Error('No historical data available for this hunt combination');
+        }
       }
-
-      const formData = calculatorForm as CalculatorFormData;
-
-      // Get draw odds
-      const odds = DataUtils.getDrawOdds(
-        formData.state,
-        formData.species,
-        formData.unit,
-        formData.season,
-        formData.residency,
-        formData.points
-      );
-
-      // Get hunt statistics
-      const stats = DataUtils.getHuntStats(
-        formData.state,
-        formData.species,
-        formData.unit,
-        formData.season
-      );
-
-      if (odds === null || !stats) {
-        setError('No historical data available for this hunt combination. Please try a different selection.');
-        return;
-      }
-
-      // Generate recommendations
-      const recommendations = DataUtils.generateRecommendations(odds, stats, formData);
-
-      // Generate chart data
-      const chartData = DataUtils.generateChartData(
-        formData.state,
-        formData.species,
-        formData.unit,
-        formData.season,
-        formData.residency
-      );
-
-      setCalculationResult({
-        odds,
-        stats,
-        formData,
-        recommendations,
-        chartData
-      });
-
     } catch (err) {
-      setError('An error occurred while calculating draw odds. Please try again.');
-      console.error('Calculation error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to calculate draw odds');
+      setCalculationResult({ odds: 0, stats: {}, recommendations: [] });
     } finally {
       setIsCalculating(false);
     }
-  }, [calculatorForm]);
+  }, [calculatorForm, aiService, useAI]);
 
-  // Find strategic opportunities
   const findStrategicOpportunities = useCallback(async () => {
     setIsCalculating(true);
     setError(null);
 
     try {
-      const criteria: StrategyCriteria = {
-        states: strategyForm.targetStates || [],
-        species: strategyForm.targetSpecies || [],
-        huntTypes: strategyForm.huntTypes || [],
-        maxPoints: strategyForm.myPoints || 0,
-        minOdds: strategyForm.minOdds || 0
-      };
-
-      const strategyType = strategyForm.strategy || 'balanced';
-
-      // Find base opportunities
-      let opportunities = DataUtils.findOpportunities(criteria);
-
-      // Apply strategy-specific filtering
-      opportunities = DataUtils.applyStrategyFiltering(opportunities, strategyType, criteria);
-
-      // Sort by odds (descending) and limit to top 8
-      opportunities.sort((a, b) => b.maxOdds - a.maxOdds);
-      opportunities = opportunities.slice(0, 8);
-
-      setStrategicOpportunities(opportunities);
-
+      if (useAI && aiService) {
+        // Use AI for strategic opportunities
+        const opportunities = await aiService.findStrategicOpportunities(
+          strategyForm.targetStates,
+          strategyForm.targetSpecies,
+          strategyForm.myPoints,
+          strategyForm.minOdds
+        );
+        
+        setStrategicOpportunities(opportunities);
+      } else {
+        // Use existing logic
+        const opportunities: StrategicOpportunity[] = [];
+        
+        strategyForm.targetStates.forEach(state => {
+          strategyForm.targetSpecies.forEach(species => {
+            const stateData = huntingData.states[state];
+            if (!stateData?.species[species]) return;
+            
+            const speciesData = stateData.species[species];
+            Object.entries(speciesData.units).forEach(([unit, unitData]) => {
+              speciesData.huntTypes.forEach(huntType => {
+                const drawOdds = generateDrawOdds(
+                  state,
+                  species,
+                  unit,
+                  huntType,
+                  'resident',
+                  strategyForm.myPoints
+                );
+                
+                if (drawOdds && drawOdds.odds >= strategyForm.minOdds) {
+                  opportunities.push({
+                    state,
+                    species,
+                    unit,
+                    huntType,
+                    odds: drawOdds.odds,
+                    maxOdds: drawOdds.odds + 10,
+                    pointsNeeded: strategyForm.myPoints,
+                    quality: unitData.quality,
+                    trend: '↑',
+                    success: drawOdds.stats.success || 0,
+                    avgSize: Math.floor(Math.random() * 50) + 250,
+                    difficulty: ['Easy', 'Moderate', 'Hard'][Math.floor(Math.random() * 3)]
+                  });
+                }
+              });
+            });
+          });
+        });
+        
+        // Sort by odds descending
+        opportunities.sort((a, b) => b.odds - a.odds);
+        setStrategicOpportunities(opportunities.slice(0, 10));
+      }
     } catch (err) {
-      setError('An error occurred while finding opportunities. Please try again.');
-      console.error('Strategy search error:', err);
+      setError(err instanceof Error ? err.message : 'Failed to find opportunities');
+      setStrategicOpportunities([]);
     } finally {
       setIsCalculating(false);
     }
-  }, [strategyForm]);
+  }, [strategyForm, aiService, useAI]);
 
-  // Update calculator form field
-  const updateCalculatorForm = useCallback((field: keyof CalculatorFormData, value: any) => {
-    setCalculatorForm(prev => ({
-      ...prev,
-      [field]: value
-    }));
-
-    // Clear dependent fields when parent fields change
-    if (field === 'state' || field === 'species') {
-      setCalculatorForm(prev => ({
-        ...prev,
-        unit: '',
-        season: ''
-      }));
-    }
-  }, []);
-
-  // Update strategy form field
-  const updateStrategyForm = useCallback((field: keyof StrategyFormData, value: any) => {
-    setStrategyForm(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  }, []);
-
-  // Get available units for current state/species
-  const availableUnits = useMemo(() => {
-    if (!calculatorForm.state || !calculatorForm.species) return {};
-    return DataUtils.getUnits(calculatorForm.state, calculatorForm.species);
-  }, [calculatorForm.state, calculatorForm.species]);
-
-  // Get available hunt types for current state/species
-  const availableHuntTypes = useMemo(() => {
-    if (!calculatorForm.state || !calculatorForm.species) return [];
-    return DataUtils.getHuntTypes(calculatorForm.state, calculatorForm.species);
-  }, [calculatorForm.state, calculatorForm.species]);
-
-  // Clear results
-  const clearResults = useCallback(() => {
-    setCalculationResult(null);
-    setStrategicOpportunities([]);
-    setError(null);
-  }, []);
-
-  // Reset forms
-  const resetCalculatorForm = useCallback(() => {
-    setCalculatorForm({
-      species: '',
-      state: '',
-      unit: '',
-      season: '',
-      points: 5,
-      residency: 'resident'
+  const updateCalculatorForm = useCallback(<K extends keyof CalculatorForm>(
+    field: K,
+    value: CalculatorForm[K]
+  ) => {
+    setCalculatorForm(prev => {
+      const updated = { ...prev, [field]: value };
+      
+      // Reset dependent fields
+      if (field === 'state') {
+        updated.species = '';
+        updated.unit = '';
+        updated.huntType = '';
+      } else if (field === 'species') {
+        updated.unit = '';
+        updated.huntType = '';
+      } else if (field === 'unit') {
+        updated.huntType = '';
+      }
+      
+      return updated;
     });
-    setCalculationResult(null);
-    setError(null);
   }, []);
 
-  const resetStrategyForm = useCallback(() => {
-    setStrategyForm({
-      targetSpecies: [],
-      targetStates: [],
-      huntTypes: [],
-      myPoints: 5,
-      minOdds: 30,
-      strategy: 'balanced'
-    });
-    setStrategicOpportunities([]);
-    setError(null);
+  const updateStrategyForm = useCallback(<K extends keyof StrategyForm>(
+    field: K,
+    value: StrategyForm[K]
+  ) => {
+    setStrategyForm(prev => ({ ...prev, [field]: value }));
   }, []);
 
   return {
-    // State
     calculatorForm,
     strategyForm,
     calculationResult,
@@ -215,14 +286,12 @@ export const useHuntingCalculator = () => {
     error,
     availableUnits,
     availableHuntTypes,
-
-    // Actions
     calculateDrawOdds,
     findStrategicOpportunities,
     updateCalculatorForm,
     updateStrategyForm,
-    clearResults,
-    resetCalculatorForm,
-    resetStrategyForm
+    initializeAI,
+    aiService,
+    useAI
   };
-}; 
+} 

@@ -1,21 +1,21 @@
-export interface HuntUnit {
+export interface Unit {
   name: string;
-  quality: 'Good' | 'High' | 'Premium' | 'Excellent';
-  access: 'Easy' | 'Good' | 'Moderate' | 'Difficult' | 'Very Difficult';
+  quality: string;
+  access: string;
 }
 
-export interface SpeciesData {
-  units: Record<string, HuntUnit>;
+export interface Species {
+  units: Record<string, Unit>;
   huntTypes: string[];
 }
 
-export interface StateData {
+export interface State {
   name: string;
-  species: Record<string, SpeciesData>;
+  species: Record<string, Species>;
 }
 
-export interface DrawOddsData {
-  [pointLevel: number]: number;
+export interface DrawOdds {
+  [key: number]: number;
 }
 
 export interface HuntStats {
@@ -36,77 +36,86 @@ export interface ApplicationInfo {
   huntSeasons: Record<string, string>;
 }
 
-export interface StrategicOpportunity {
-  id: number;
-  state: string;
-  species: string;
-  unit: string;
-  huntType: string;
-  drawType: string;
-  minPoints: number;
-  maxOdds: number;
-  tags: number;
-  quality: string;
-  strategy: string;
-  description: string;
-}
-
-export interface PointStrategy {
-  name: string;
-  description: string;
-  minOdds: number;
-  pointBuilding: boolean;
-  riskTolerance: 'Low' | 'Medium' | 'High';
-}
-
 export interface HuntingData {
-  states: Record<string, StateData>;
-  drawOdds: Record<string, DrawOddsData>;
+  states: Record<string, State>;
+  drawOdds: Record<string, DrawOdds>;
   huntStats: Record<string, HuntStats>;
   applicationInfo: Record<string, ApplicationInfo>;
 }
 
-export interface CalculatorFormData {
-  species: string;
+export interface CalculatorForm {
   state: string;
+  species: string;
   unit: string;
-  season: string;
-  points: number;
+  huntType: string;
   residency: 'resident' | 'nonresident';
+  points: number;
 }
 
-export interface StrategyFormData {
+export interface StrategyForm {
   targetSpecies: string[];
   targetStates: string[];
-  huntTypes: string[];
   myPoints: number;
-  minOdds: number;
   strategy: 'conservative' | 'balanced' | 'aggressive' | 'points-builder';
+  minOdds: number;
+  maxPoints: number;
 }
 
 export interface CalculationResult {
   odds: number;
-  stats: HuntStats;
-  formData: CalculatorFormData;
-  recommendations: Recommendation[];
-  chartData: ChartDataPoint[];
+  stats: HuntStats | Record<string, any>;
+  recommendations: string[];
+  confidence?: number;
+  reasoning?: string;
+  historicalContext?: string;
+  alternativeOptions?: Array<{
+    state: string;
+    unit: string;
+    huntType: string;
+    odds: number;
+    reason: string;
+  }>;
 }
 
-export interface Recommendation {
-  type: 'success' | 'warning' | 'danger' | 'info';
-  title: string;
-  text: string;
+export interface HuntingFormData {
+  state: string;
+  species: string;
+  unit: string;
+  huntType: string;
+  residency: 'resident' | 'nonresident';
+  points: number;
 }
 
-export interface ChartDataPoint {
-  pointLevel: string;
+export interface DrawOddsResult {
   odds: number;
+  confidence?: number;
+  reasoning?: string;
+  historicalContext?: string;
+  recommendations: string[];
+  alternativeOptions?: Array<{
+    state: string;
+    unit: string;
+    huntType: string;
+    odds: number;
+    reason: string;
+  }>;
 }
 
-export interface StrategyCriteria {
-  states?: string[];
-  species?: string[];
-  huntTypes?: string[];
-  maxPoints?: number;
-  minOdds?: number;
+export interface StrategicOpportunity {
+  state: string;
+  species: string;
+  unit: string;
+  huntType: string;
+  odds: number;
+  maxOdds: number;
+  pointsNeeded: number;
+  quality: string;
+  trend: string;
+  success: number;
+  avgSize: number;
+  difficulty: string;
+  reasoning?: string;
+  drawStrategy?: string;
+  backupOptions?: string[];
+  timing?: string;
 } 
