@@ -241,10 +241,10 @@ export class HuntingAIService {
       reasoning: analysis.reasoning || 'Analysis based on current trends',
       historicalContext: analysis.historicalContext || 'Historical data unavailable',
       recommendations: Array.isArray(analysis.recommendations) ? 
-        analysis.recommendations.map((rec: string) => ({
-          type: 'info',
-          title: 'AI Recommendation',
-          text: rec
+        analysis.recommendations.map((rec: any) => ({
+          type: rec.type || 'info',
+          title: rec.title || 'AI Recommendation',
+          text: rec.text || (typeof rec === 'string' ? rec : 'No recommendation text')
         })) : [],
       alternativeOptions: Array.isArray(analysis.alternativeOptions) ? 
         analysis.alternativeOptions.map((opt: any) => ({
