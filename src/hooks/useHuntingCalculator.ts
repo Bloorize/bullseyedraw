@@ -15,6 +15,11 @@ import type {
 
 // Use environment variable for OpenAI API key
 const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
+console.log('Environment check:', {
+  hasKey: !!OPENAI_API_KEY,
+  keyStart: OPENAI_API_KEY ? OPENAI_API_KEY.substring(0, 8) + '...' : 'NO KEY',
+  nodeEnv: process.env.NODE_ENV
+});
 
 const DEFAULT_CALCULATOR_FORM: CalculatorForm = {
   state: '',
@@ -40,9 +45,18 @@ export function useHuntingCalculator() {
   
   // Auto-initialize AI service with environment variable
   useEffect(() => {
+    console.log('useEffect - AI initialization check:', {
+      hasKey: !!OPENAI_API_KEY,
+      startsWithSk: OPENAI_API_KEY.startsWith('sk-'),
+      keyLength: OPENAI_API_KEY.length
+    });
+    
     if (OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
+      console.log('Initializing AI service...');
       setAiService(new HuntingAIService({ apiKey: OPENAI_API_KEY }));
       setUseAI(true);
+    } else {
+      console.log('AI service not initialized - invalid or missing API key');
     }
   }, []);
 

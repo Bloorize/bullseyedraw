@@ -126,10 +126,9 @@ export default function HuntingCalculator() {
           </div>
 
           <div className="bg-white/95 rounded-xl p-8 max-w-2xl mt-16">
-          <h2
-  className="text-4xl font-bold text-stone-800 mb-4 indent-35">
-  BullseyeDraw Calculator
-</h2>
+                      <h2 className="text-4xl font-bold text-stone-800 mb-4 ml-36">
+              BullseyeDraw Calculator
+            </h2>
 
             <p className="text-lg text-stone-600">
               {useAI ? (
