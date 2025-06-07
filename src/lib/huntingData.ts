@@ -358,59 +358,95 @@ export const huntingData: HuntingData = {
 
   // Comprehensive draw odds data for demo
   drawOdds: {
-    // Utah
-    "utah-elk-cache-archery-resident": {
+    // Utah - Updated with new unit names
+    "utah-elk-beaver-archery-resident": {
       0: 20, 1: 25, 2: 35, 3: 45, 4: 55, 5: 67, 6: 75, 7: 82, 8: 88, 9: 92, 10: 95
     },
-    "utah-elk-cache-rifle-resident": {
+    "utah-elk-beaver-rifle-resident": {
       0: 8, 1: 12, 2: 18, 3: 25, 4: 35, 5: 45, 6: 55, 7: 65, 8: 75, 9: 82, 10: 88
     },
-    "utah-elk-cache-muzzleloader-resident": {
+    "utah-elk-beaver-muzzleloader-resident": {
       0: 15, 1: 20, 2: 28, 3: 38, 4: 48, 5: 58, 6: 68, 7: 76, 8: 83, 9: 89, 10: 94
     },
-    "utah-elk-wasatch-archery-resident": {
+    "utah-elk-east-archery-resident": {
       0: 25, 1: 32, 2: 42, 3: 52, 4: 63, 5: 73, 6: 81, 7: 87, 8: 92, 9: 96, 10: 98
     },
-    "utah-elk-wasatch-rifle-resident": {
+    "utah-elk-east-rifle-resident": {
       0: 12, 1: 18, 2: 25, 3: 35, 4: 45, 5: 55, 6: 65, 7: 74, 8: 81, 9: 87, 10: 92
     },
-    "utah-elk-manti-rifle-resident": {
+    "utah-elk-north-rifle-resident": {
       0: 35, 1: 45, 2: 55, 3: 65, 4: 75, 5: 82, 6: 88, 7: 92, 8: 95, 9: 97, 10: 99
     },
-    "utah-elk-manti-archery-resident": {
+    "utah-elk-north-archery-resident": {
       0: 45, 1: 55, 2: 65, 3: 74, 4: 82, 5: 88, 6: 93, 7: 96, 8: 98, 9: 99, 10: 99
     },
-    "utah-deer-plateau-archery-resident": {
+    "utah-elk-south-archery-resident": {
+      0: 30, 1: 38, 2: 46, 3: 55, 4: 64, 5: 72, 6: 79, 7: 85, 8: 90, 9: 94, 10: 97
+    },
+    "utah-elk-south-rifle-resident": {
+      0: 18, 1: 25, 2: 33, 3: 42, 4: 51, 5: 60, 6: 68, 7: 75, 8: 81, 9: 86, 10: 90
+    },
+    "utah-deer-beaver-archery-resident": {
       0: 45, 1: 55, 2: 65, 3: 75, 4: 82, 5: 89, 6: 93, 7: 96, 8: 98, 9: 99, 10: 99
     },
-    "utah-deer-plateau-rifle-resident": {
+    "utah-deer-beaver-rifle-resident": {
       0: 25, 1: 35, 2: 45, 3: 55, 4: 65, 5: 74, 6: 82, 7: 88, 8: 93, 9: 96, 10: 98
     },
-    "utah-deer-bookcliffs-rifle-resident": {
-      0: 5, 1: 8, 2: 12, 3: 18, 4: 25, 5: 34, 6: 44, 7: 55, 8: 66, 9: 76, 10: 84
+    "utah-deer-east-rifle-resident": {
+      0: 22, 1: 32, 2: 42, 3: 52, 4: 62, 5: 71, 6: 79, 7: 85, 8: 90, 9: 94, 10: 97
     },
-    "utah-moose-northslope-rifle-resident": {
-      0: 1, 1: 2, 2: 3, 3: 5, 4: 7, 5: 10, 6: 12, 7: 15, 8: 18, 9: 22, 10: 25
+    "utah-deer-north-archery-resident": {
+      0: 40, 1: 50, 2: 60, 3: 70, 4: 78, 5: 85, 6: 90, 7: 94, 8: 97, 9: 99, 10: 99
     },
-    "utah-antelope-parker-rifle-resident": {
+    "utah-deer-south-rifle-resident": {
+      0: 28, 1: 38, 2: 48, 3: 58, 4: 67, 5: 75, 6: 82, 7: 87, 8: 91, 9: 95, 10: 98
+    },
+    "utah-antelope-beaver-archery-resident": {
       0: 75, 1: 82, 2: 88, 3: 92, 4: 95, 5: 97, 6: 98, 7: 99, 8: 99, 9: 99, 10: 99
     },
-
-    // Colorado
-    "colorado-elk-unit2-rifle-1-resident": {
-      0: 2, 1: 3, 2: 5, 3: 8, 4: 12, 5: 16, 6: 22, 7: 28, 8: 35, 9: 42, 10: 50
+    "utah-antelope-book-muzzleloader-resident": {
+      0: 65, 1: 74, 2: 82, 3: 88, 4: 92, 5: 95, 6: 97, 7: 98, 8: 99, 9: 99, 10: 99
     },
-    "colorado-elk-unit61-archery-resident": {
+    "utah-goat-beaver-any-legal-weapon-resident": {
+      0: 1, 1: 2, 2: 3, 3: 5, 4: 7, 5: 10, 6: 12, 7: 15, 8: 18, 9: 22, 10: 25
+    },
+    "utah-goat-bearsprings-any-legal-weapon-resident": {
+      0: 1, 1: 2, 2: 3, 3: 4, 4: 6, 5: 8, 6: 10, 7: 13, 8: 16, 9: 20, 10: 24
+    },
+    "utah-goat-nebo-any-legal-weapon-resident": {
+      0: 1, 1: 1, 2: 2, 3: 3, 4: 5, 5: 7, 6: 9, 7: 12, 8: 15, 9: 19, 10: 23
+    },
+    "utah-bison-antelopeisland-any-legal-weapon-resident": {
+      0: 0.5, 1: 1, 2: 1.5, 3: 2, 4: 3, 5: 4, 6: 5, 7: 7, 8: 9, 9: 12, 10: 15
+    },
+
+    // Colorado - Updated with new unit names
+    "colorado-deer-fourmile-dates-resident": {
+      0: 45, 1: 55, 2: 65, 3: 75, 4: 82, 5: 88, 6: 92, 7: 95, 8: 97, 9: 98, 10: 99
+    },
+    "colorado-elk-unit145-valid-resident": {
+      0: 25, 1: 35, 2: 45, 3: 55, 4: 65, 5: 74, 6: 82, 7: 88, 8: 92, 9: 95, 10: 97
+    },
+    "colorado-elk-unit109-dates-resident": {
+      0: 30, 1: 40, 2: 50, 3: 60, 4: 69, 5: 77, 6: 84, 7: 89, 8: 93, 9: 96, 10: 98
+    },
+    "colorado-elk-unit61-valid-resident": {
       0: 8, 1: 12, 2: 18, 3: 25, 4: 33, 5: 42, 6: 52, 7: 62, 8: 72, 9: 80, 10: 87
     },
-    "colorado-elk-unit201-rifle-2-resident": {
-      0: 35, 1: 45, 2: 55, 3: 65, 4: 75, 5: 82, 6: 88, 7: 92, 8: 95, 9: 97, 10: 99
+    "colorado-elk-unit67-hunt-code-resident": {
+      0: 12, 1: 18, 2: 26, 3: 35, 4: 45, 5: 55, 6: 65, 7: 74, 8: 81, 9: 87, 10: 92
     },
-    "colorado-elk-unit76-rifle-3-resident": {
+    "colorado-antelope-unit10-valid-resident": {
+      0: 65, 1: 74, 2: 82, 3: 88, 4: 92, 5: 95, 6: 97, 7: 98, 8: 99, 9: 99, 10: 99
+    },
+    "colorado-antelope-unit104-hunt-code-resident": {
       0: 55, 1: 65, 2: 74, 3: 82, 4: 88, 5: 92, 6: 95, 7: 97, 8: 98, 9: 99, 10: 99
     },
-    "colorado-deer-unit22-rifle-2-resident": {
-      0: 8, 1: 12, 2: 18, 3: 26, 4: 35, 5: 45, 6: 56, 7: 67, 8: 76, 9: 84, 10: 90
+    "colorado-moose-unit104-valid-resident": {
+      0: 1, 1: 2, 2: 3, 3: 5, 4: 7, 5: 10, 6: 13, 7: 16, 8: 20, 9: 24, 10: 28
+    },
+    "colorado-bear-unit116-dates-resident": {
+      0: 70, 1: 78, 2: 84, 3: 89, 4: 93, 5: 96, 6: 98, 7: 99, 8: 99, 9: 99, 10: 99
     },
 
     // Wyoming  
@@ -455,53 +491,85 @@ export const huntingData: HuntingData = {
 
   // Comprehensive hunt statistics
   huntStats: {
-    "utah-elk-cache-archery": {
+    "utah-elk-beaver-archery": {
       tags: 35, applicants: 143, pointsNeeded: "5-7", trend: "↑ 8%",
       quality: "High", success: "75%", avgSize: "320\"", difficulty: "Moderate"
     },
-    "utah-elk-cache-rifle": {
+    "utah-elk-beaver-rifle": {
       tags: 25, applicants: 287, pointsNeeded: "8-10", trend: "↓ 3%",
       quality: "High", success: "85%", avgSize: "340\"", difficulty: "Moderate"
     },
-    "utah-elk-cache-muzzleloader": {
+    "utah-elk-beaver-muzzleloader": {
       tags: 15, applicants: 198, pointsNeeded: "6-8", trend: "→ 0%",
       quality: "High", success: "80%", avgSize: "330\"", difficulty: "Moderate"
     },
-    "utah-elk-wasatch-archery": {
+    "utah-elk-east-archery": {
       tags: 45, applicants: 127, pointsNeeded: "4-6", trend: "↑ 12%",
       quality: "High", success: "70%", avgSize: "315\"", difficulty: "Moderate"
     },
-    "utah-elk-wasatch-rifle": {
+    "utah-elk-east-rifle": {
       tags: 30, applicants: 245, pointsNeeded: "6-8", trend: "↑ 5%",
       quality: "High", success: "88%", avgSize: "325\"", difficulty: "Moderate"
     },
-    "utah-elk-manti-rifle": {
+    "utah-elk-north-rifle": {
       tags: 60, applicants: 89, pointsNeeded: "3-5", trend: "↑ 15%",
       quality: "Good", success: "80%", avgSize: "300\"", difficulty: "Easy"
     },
-    "utah-elk-manti-archery": {
+    "utah-elk-north-archery": {
       tags: 40, applicants: 65, pointsNeeded: "2-4", trend: "↑ 18%",
       quality: "Good", success: "75%", avgSize: "290\"", difficulty: "Easy"
     },
-    "utah-deer-plateau-archery": {
+    "utah-elk-south-archery": {
+      tags: 50, applicants: 112, pointsNeeded: "3-5", trend: "↑ 10%",
+      quality: "High", success: "72%", avgSize: "305\"", difficulty: "Moderate"
+    },
+    "utah-elk-south-rifle": {
+      tags: 35, applicants: 178, pointsNeeded: "5-7", trend: "↑ 7%",
+      quality: "High", success: "82%", avgSize: "315\"", difficulty: "Moderate"
+    },
+    "utah-deer-beaver-archery": {
       tags: 120, applicants: 156, pointsNeeded: "2-4", trend: "↑ 5%",
-      quality: "Excellent", success: "65%", avgSize: "190\"", difficulty: "Moderate"
+      quality: "Good", success: "65%", avgSize: "190\"", difficulty: "Moderate"
     },
-    "utah-deer-plateau-rifle": {
+    "utah-deer-beaver-rifle": {
       tags: 80, applicants: 234, pointsNeeded: "4-6", trend: "↑ 3%",
-      quality: "Excellent", success: "78%", avgSize: "185\"", difficulty: "Moderate"
+      quality: "Good", success: "78%", avgSize: "185\"", difficulty: "Moderate"
     },
-    "utah-deer-bookcliffs-rifle": {
-      tags: 12, applicants: 456, pointsNeeded: "12-15", trend: "↓ 2%",
-      quality: "Premium", success: "90%", avgSize: "210\"", difficulty: "Moderate"
+    "utah-deer-east-rifle": {
+      tags: 75, applicants: 198, pointsNeeded: "3-5", trend: "↑ 6%",
+      quality: "Good", success: "76%", avgSize: "182\"", difficulty: "Moderate"
     },
-    "utah-moose-northslope-rifle": {
-      tags: 5, applicants: 523, pointsNeeded: "20+", trend: "↓ 2%",
-      quality: "Premium", success: "95%", avgSize: "200\"", difficulty: "Difficult"
+    "utah-deer-north-archery": {
+      tags: 90, applicants: 134, pointsNeeded: "2-4", trend: "↑ 8%",
+      quality: "Good", success: "68%", avgSize: "188\"", difficulty: "Moderate"
     },
-    "utah-antelope-parker-rifle": {
+    "utah-deer-south-rifle": {
+      tags: 85, applicants: 167, pointsNeeded: "3-5", trend: "↑ 4%",
+      quality: "Good", success: "74%", avgSize: "186\"", difficulty: "Moderate"
+    },
+    "utah-antelope-beaver-archery": {
       tags: 75, applicants: 98, pointsNeeded: "0-2", trend: "↑ 12%",
       quality: "Good", success: "82%", avgSize: "78\"", difficulty: "Easy"
+    },
+    "utah-antelope-book-muzzleloader": {
+      tags: 45, applicants: 67, pointsNeeded: "0-1", trend: "↑ 15%",
+      quality: "Good", success: "85%", avgSize: "80\"", difficulty: "Easy"
+    },
+    "utah-goat-beaver-any-legal-weapon": {
+      tags: 2, applicants: 456, pointsNeeded: "15+", trend: "→ 0%",
+      quality: "Premium", success: "95%", avgSize: "N/A", difficulty: "Very Difficult"
+    },
+    "utah-goat-bearsprings-any-legal-weapon": {
+      tags: 1, applicants: 523, pointsNeeded: "18+", trend: "↓ 1%",
+      quality: "Premium", success: "98%", avgSize: "N/A", difficulty: "Very Difficult"
+    },
+    "utah-goat-nebo-any-legal-weapon": {
+      tags: 1, applicants: 612, pointsNeeded: "20+", trend: "↓ 2%",
+      quality: "Premium", success: "99%", avgSize: "N/A", difficulty: "Very Difficult"
+    },
+    "utah-bison-antelopeisland-any-legal-weapon": {
+      tags: 1, applicants: 1234, pointsNeeded: "25+", trend: "→ 0%",
+      quality: "Premium", success: "100%", avgSize: "N/A", difficulty: "Extremely Difficult"
     },
     
     "colorado-elk-unit2-rifle-1": {
