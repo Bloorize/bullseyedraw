@@ -85,48 +85,47 @@ export default function HuntingCalculator() {
 
   return (
     <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-gradient-to-b from-green-700 to-green-800 text-white shadow-lg py-4 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-3">
-              <Image
-                src="/logo.png"
-                alt="BullseyeDraw Logo"
-                width={40}
-                height={40}
-                className="rounded-lg"
-              />
-              <h1 className="text-2xl font-bold">BullseyeDraw</h1>
-            </div>
-            <div className="flex items-center gap-4">
-              <nav className="hidden md:flex space-x-8">
-                <button
-                  onClick={() => setActiveTab('calculator')}
-                  className={`font-medium hover:text-amber-200 transition-colors ${
-                    activeTab === 'calculator' ? 'text-amber-200' : 'text-white'
-                  }`}
-                >
-                  Calculator
-                </button>
-                <button
-                  onClick={() => setActiveTab('strategy')}
-                  className={`font-medium hover:text-amber-200 transition-colors ${
-                    activeTab === 'strategy' ? 'text-amber-200' : 'text-white'
-                  }`}
-                >
-                  Strategy
-                </button>
-              </nav>
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section with Logo */}
+        <section className="hunting-hero-bg rounded-2xl p-8 mb-8 relative">
+          {/* Logo positioned in top-left corner */}
+          <div className="absolute top-6 left-6 z-10">
+            <Image
+              src="/logo.png"
+              alt="BullseyeDraw Logo"
+              width={60}
+              height={60}
+              className="rounded-lg shadow-lg"
+            />
+          </div>
+          
+          {/* Navigation buttons in top-right corner */}
+          <div className="absolute top-6 right-6 z-10">
+            <div className="flex space-x-4">
+              <button
+                onClick={() => setActiveTab('calculator')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'calculator' 
+                    ? 'bg-white text-green-700 shadow-md' 
+                    : 'bg-white/20 text-white hover:bg-white/30'
+                }`}
+              >
+                Calculator
+              </button>
+              <button
+                onClick={() => setActiveTab('strategy')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  activeTab === 'strategy' 
+                    ? 'bg-white text-green-700 shadow-md' 
+                    : 'bg-white/20 text-white hover:bg-white/30'
+                }`}
+              >
+                Strategy
+              </button>
             </div>
           </div>
-        </div>
-      </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
-        <section className="hunting-hero-bg rounded-2xl p-8 mb-8">
-          <div className="bg-white/95 rounded-xl p-8 max-w-2xl">
+          <div className="bg-white/95 rounded-xl p-8 max-w-2xl mt-16">
             <h2 className="text-4xl font-bold text-stone-800 mb-4">
               BullseyeDraw Calculator
             </h2>
