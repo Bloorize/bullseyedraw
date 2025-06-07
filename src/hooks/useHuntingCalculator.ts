@@ -49,9 +49,9 @@ export function useHuntingCalculator() {
       allEnvVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_'))
     });
     
-    if (OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
+    if (OPENAI_API_KEY && OPENAI_API_KEY.length > 20) {
       console.log('Initializing AI service...');
-      setAiService(new HuntingAIService({ apiKey: OPENAI_API_KEY }));
+      setAiService(new HuntingAIService({ apiKey: OPENAI_API_KEY.trim() }));
       setUseAI(true);
     } else {
       console.log('AI service not initialized - invalid or missing API key');
