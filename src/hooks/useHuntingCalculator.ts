@@ -13,13 +13,7 @@ import type {
   DrawOddsResult
 } from '@/types/hunting';
 
-// Use environment variable for OpenAI API key
-const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
-console.log('Environment check:', {
-  hasKey: !!OPENAI_API_KEY,
-  keyStart: OPENAI_API_KEY ? OPENAI_API_KEY.substring(0, 8) + '...' : 'NO KEY',
-  nodeEnv: process.env.NODE_ENV
-});
+// Environment variable will be accessed in useEffect
 
 const DEFAULT_CALCULATOR_FORM: CalculatorForm = {
   state: '',
@@ -45,10 +39,14 @@ export function useHuntingCalculator() {
   
   // Auto-initialize AI service with environment variable
   useEffect(() => {
+    const OPENAI_API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY || '';
+    
     console.log('useEffect - AI initialization check:', {
       hasKey: !!OPENAI_API_KEY,
       startsWithSk: OPENAI_API_KEY.startsWith('sk-'),
-      keyLength: OPENAI_API_KEY.length
+      keyLength: OPENAI_API_KEY.length,
+      nodeEnv: process.env.NODE_ENV,
+      allEnvVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_'))
     });
     
     if (OPENAI_API_KEY && OPENAI_API_KEY.startsWith('sk-')) {
