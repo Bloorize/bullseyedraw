@@ -12,18 +12,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const validStates = ['utah', 'colorado', 'wyoming', 'montana', 'idaho', 'arizona', 'nevada'];
+    const validSpecies = ['elk', 'deer', 'moose', 'sheep', 'goat', 'antelope', 'bear'];
+    
     const prompt = `Find the best hunting opportunities with these criteria:
       Target States: ${targetStates.join(', ')}
       Target Species: ${targetSpecies.join(', ')}
       My Points: ${points}
       Minimum Acceptable Odds: ${minOdds}%
       
+      IMPORTANT: Only use these valid state codes: ${validStates.join(', ')}
+      IMPORTANT: Only use these valid species: ${validSpecies.join(', ')}
+      
       You MUST respond with ONLY a valid JSON object in this EXACT format (no other text):
       {
         "recommendations": [
           {
-            "state": "<state>",
-            "species": "<species>",
+            "state": "<state code from valid list>",
+            "species": "<species from valid list>",
             "unit": "<specific unit>",
             "huntType": "<hunt type>",
             "odds": <number>,

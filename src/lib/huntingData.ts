@@ -12,128 +12,126 @@ export const huntingData: HuntingData = {
       species: {
         elk: {
           units: {
-            cache: { name: "Cache", quality: "High", access: "Good" },
-            northslope: { name: "North Slope", quality: "Premium", access: "Difficult" },
-            wasatch: { name: "Wasatch Mountains", quality: "High", access: "Good" },
-            manti: { name: "Manti", quality: "Good", access: "Good" },
-            plateau: { name: "Plateau", quality: "Good", access: "Good" },
-            bookcliffs: { name: "Book Cliffs", quality: "Premium", access: "Moderate" },
-            henrymtns: { name: "Henry Mountains", quality: "Premium", access: "Difficult" },
-            lasal: { name: "La Sal", quality: "High", access: "Moderate" }
+            beaver: { name: "Beaver", quality: "High", access: "Good" },
+            east: { name: "East", quality: "High", access: "Good" },
+            north: { name: "North", quality: "High", access: "Good" },
+            south: { name: "South", quality: "High", access: "Good" }
           },
           huntTypes: ["archery", "muzzleloader", "rifle"]
         },
         deer: {
           units: {
-            cache: { name: "Cache", quality: "Good", access: "Good" },
-            wasatch: { name: "Wasatch Mountains", quality: "High", access: "Good" },
-            plateau: { name: "Plateau", quality: "Excellent", access: "Good" },
-            bookcliffs: { name: "Book Cliffs", quality: "Premium", access: "Moderate" },
-            vernon: { name: "Vernon", quality: "Good", access: "Good" },
-            henrymtns: { name: "Henry Mountains", quality: "Premium", access: "Difficult" },
-            pauns: { name: "Pauns", quality: "Premium", access: "Moderate" },
-            pinkneedle: { name: "Pine Needle", quality: "High", access: "Good" }
+            beaver: { name: "Beaver", quality: "Good", access: "Good" },
+            east: { name: "East", quality: "Good", access: "Good" },
+            north: { name: "North", quality: "Good", access: "Good" },
+            south: { name: "South", quality: "Good", access: "Good" }
           },
           huntTypes: ["archery", "muzzleloader", "rifle"]
         },
-        moose: {
+        antelope: {
           units: {
-            northslope: { name: "North Slope", quality: "Premium", access: "Difficult" },
-            wasatch: { name: "Wasatch Mountains", quality: "High", access: "Moderate" },
-            boulder: { name: "Boulder/Kaiparowits", quality: "High", access: "Difficult" }
+            beaver: { name: "Beaver", quality: "Good", access: "Good" },
+            book: { name: "Book", quality: "Good", access: "Good" }
           },
-          huntTypes: ["rifle"]
-        },
-        sheep: {
-          units: {
-            wasatch: { name: "Wasatch Mountains", quality: "Premium", access: "Difficult" },
-            zion: { name: "Zion", quality: "Premium", access: "Very Difficult" },
-            bookcliffs: { name: "Book Cliffs", quality: "Premium", access: "Difficult" }
-          },
-          huntTypes: ["rifle"]
+          huntTypes: ["archery", "muzzleloader"]
         },
         goat: {
           units: {
-            wasatch: { name: "Wasatch Mountains", quality: "Premium", access: "Very Difficult" },
-            tushar: { name: "Tushar Mountains", quality: "High", access: "Difficult" }
+            beaver: { name: "Beaver", quality: "Premium", access: "Difficult" },
+            bearsprings: { name: "Bear Springs", quality: "Premium", access: "Difficult" },
+            nebo: { name: "Nebo", quality: "Premium", access: "Difficult" }
           },
-          huntTypes: ["rifle", "archery"]
+          huntTypes: ["any-legal-weapon"]
         },
-        antelope: {
+        bison: {
           units: {
-            parker: { name: "Parker Mountain", quality: "Good", access: "Good" },
-            southwest: { name: "Southwest Desert", quality: "Good", access: "Good" }
+            antelopeisland: { name: "Antelope Island", quality: "Premium", access: "Good" }
           },
-          huntTypes: ["archery", "rifle"]
-        },
-        bear: {
-          units: {
-            wasatch: { name: "Wasatch Mountains", quality: "Good", access: "Good" },
-            lasal: { name: "La Sal", quality: "High", access: "Moderate" },
-            boulder: { name: "Boulder", quality: "High", access: "Difficult" }
-          },
-          huntTypes: ["archery", "rifle"]
+          huntTypes: ["any-legal-weapon"]
         }
       }
     },
     colorado: {
       name: "Colorado",
       species: {
-        elk: {
-          units: {
-            unit2: { name: "Unit 2", quality: "Premium", access: "Difficult" },
-            unit10: { name: "Unit 10", quality: "Premium", access: "Moderate" },
-            unit61: { name: "Unit 61", quality: "Premium", access: "Difficult" },
-            unit76: { name: "Unit 76", quality: "High", access: "Good" },
-            unit201: { name: "Unit 201", quality: "Good", access: "Good" },
-            unit67: { name: "Unit 67", quality: "Premium", access: "Moderate" },
-            unit214: { name: "Unit 214", quality: "Good", access: "Good" }
-          },
-          huntTypes: ["archery", "muzzleloader", "rifle-1", "rifle-2", "rifle-3"]
-        },
         deer: {
           units: {
-            unit22: { name: "Unit 22", quality: "Premium", access: "Moderate" },
-            unit76: { name: "Unit 76", quality: "High", access: "Good" },
-            unit140: { name: "Unit 140", quality: "High", access: "Good" },
-            unit214: { name: "Unit 214", quality: "Good", access: "Good" }
+            fourmile: { name: "Four Mile", quality: "Good", access: "Good" }
           },
-          huntTypes: ["archery", "muzzleloader", "rifle-2", "rifle-3"]
+          huntTypes: ["dates", "sex", "hunt-codes", "list"]
         },
-        moose: {
+        elk: {
           units: {
-            unit4: { name: "Unit 4", quality: "Premium", access: "Difficult" },
-            unit17: { name: "Unit 17", quality: "Premium", access: "Very Difficult" }
+            unit145: { name: "Unit 145", quality: "High", access: "Good" },
+            unit109: { name: "Unit 109", quality: "High", access: "Good" },
+            unit33: { name: "Unit 33", quality: "High", access: "Good" },
+            unit39: { name: "Unit 39", quality: "High", access: "Good" },
+            unit40: { name: "Unit 40", quality: "High", access: "Good" },
+            unit41: { name: "Unit 41", quality: "High", access: "Good" },
+            unit42: { name: "Unit 42", quality: "High", access: "Good" },
+            unit44: { name: "Unit 44", quality: "High", access: "Good" },
+            unit45: { name: "Unit 45", quality: "High", access: "Good" },
+            unit46: { name: "Unit 46", quality: "High", access: "Good" },
+            unit47: { name: "Unit 47", quality: "High", access: "Good" },
+            unit48: { name: "Unit 48", quality: "High", access: "Good" },
+            unit49: { name: "Unit 49", quality: "High", access: "Good" },
+            unit50: { name: "Unit 50", quality: "High", access: "Good" },
+            unit51: { name: "Unit 51", quality: "High", access: "Good" },
+            unit52: { name: "Unit 52", quality: "High", access: "Good" },
+            unit54: { name: "Unit 54", quality: "High", access: "Good" },
+            unit55: { name: "Unit 55", quality: "High", access: "Good" },
+            unit56: { name: "Unit 56", quality: "High", access: "Good" },
+            unit57: { name: "Unit 57", quality: "High", access: "Good" },
+            unit58: { name: "Unit 58", quality: "High", access: "Good" },
+            unit61: { name: "Unit 61", quality: "High", access: "Good" },
+            unit66: { name: "Unit 66", quality: "High", access: "Good" },
+            unit67: { name: "Unit 67", quality: "High", access: "Good" },
+            unit69: { name: "Unit 69", quality: "High", access: "Good" },
+            unit70: { name: "Unit 70", quality: "High", access: "Good" },
+            unit71: { name: "Unit 71", quality: "High", access: "Good" },
+            unit72: { name: "Unit 72", quality: "High", access: "Good" },
+            unit73: { name: "Unit 73", quality: "High", access: "Good" },
+            unit74: { name: "Unit 74", quality: "High", access: "Good" }
           },
-          huntTypes: ["rifle"]
-        },
-        sheep: {
-          units: {
-            unit5: { name: "Unit 5", quality: "Premium", access: "Very Difficult" },
-            unit136: { name: "Unit 136", quality: "Premium", access: "Difficult" }
-          },
-          huntTypes: ["rifle"]
-        },
-        goat: {
-          units: {
-            unit2: { name: "Unit 2", quality: "Premium", access: "Very Difficult" },
-            unit14: { name: "Unit 14", quality: "Premium", access: "Difficult" }
-          },
-          huntTypes: ["rifle"]
+          huntTypes: ["valid", "dates", "sex", "hunt-code", "list"]
         },
         antelope: {
           units: {
-            unit8: { name: "Unit 8", quality: "High", access: "Good" },
-            unit140: { name: "Unit 140", quality: "Good", access: "Good" }
+            unit5: { name: "Unit 5", quality: "Good", access: "Good" },
+            unit6: { name: "Unit 6", quality: "Good", access: "Good" },
+            unit7: { name: "Unit 7", quality: "Good", access: "Good" },
+            unit8: { name: "Unit 8", quality: "Good", access: "Good" },
+            unit9: { name: "Unit 9", quality: "Good", access: "Good" },
+            unit10: { name: "Unit 10", quality: "Good", access: "Good" },
+            unit17: { name: "Unit 17", quality: "Good", access: "Good" },
+            unit18: { name: "Unit 18", quality: "Good", access: "Good" },
+            unit19: { name: "Unit 19", quality: "Good", access: "Good" },
+            unit20: { name: "Unit 20", quality: "Good", access: "Good" },
+            unit29: { name: "Unit 29", quality: "Good", access: "Good" },
+            unit30: { name: "Unit 30", quality: "Good", access: "Good" },
+            unit31: { name: "Unit 31", quality: "Good", access: "Good" },
+            unit32: { name: "Unit 32", quality: "Good", access: "Good" },
+            unit33: { name: "Unit 33", quality: "Good", access: "Good" },
+            unit104: { name: "Unit 104", quality: "Good", access: "Good" }
           },
-          huntTypes: ["archery", "rifle"]
+          huntTypes: ["valid", "sex", "hunt-code", "list", "dates"]
+        },
+        moose: {
+          units: {
+            unit104: { name: "Unit 104", quality: "Premium", access: "Difficult" }
+          },
+          huntTypes: ["valid", "dates", "sex", "hunt-code", "list"]
         },
         bear: {
           units: {
-            unit76: { name: "Unit 76", quality: "Good", access: "Good" },
-            unit214: { name: "Unit 214", quality: "High", access: "Good" }
+            unit113: { name: "Unit 113", quality: "Good", access: "Good" },
+            unit114: { name: "Unit 114", quality: "Good", access: "Good" },
+            unit115: { name: "Unit 115", quality: "Good", access: "Good" },
+            unit116: { name: "Unit 116", quality: "Good", access: "Good" },
+            unit121: { name: "Unit 121", quality: "Good", access: "Good" },
+            unit123: { name: "Unit 123", quality: "Good", access: "Good" }
           },
-          huntTypes: ["archery", "rifle"]
+          huntTypes: ["dates", "sex", "hunt-code", "list", "valid"]
         }
       }
     },

@@ -93,9 +93,9 @@ export default function HuntingCalculator() {
             <Image
               src="/logo.png"
               alt="BullseyeDraw Logo"
-              width={60}
-              height={60}
-              className="rounded-lg shadow-lg"
+              width={200}
+              height={200}
+              className="rounded-lg"
             />
           </div>
           
@@ -126,20 +126,22 @@ export default function HuntingCalculator() {
           </div>
 
           <div className="bg-white/95 rounded-xl p-8 max-w-2xl mt-16">
-            <h2 className="text-4xl font-bold text-stone-800 mb-4">
-              BullseyeDraw Calculator
-            </h2>
+          <h2
+  className="text-4xl font-bold text-stone-800 mb-4 indent-35">
+  BullseyeDraw Calculator
+</h2>
+
             <p className="text-lg text-stone-600">
               {useAI ? (
                 <>
-                  <span className="inline-flex items-center gap-1 text-green-600 font-semibold">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+<span className="inline-flex items-center gap-1 text-green-600 font-semibold ml-30">                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                             d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                     AI-Powered Analysis Active
                   </span>
                   <br />
+                  <br></br>
                   Get intelligent predictions and personalized hunting strategies powered by advanced AI.
                 </>
               ) : (
@@ -533,10 +535,10 @@ export default function HuntingCalculator() {
                       <div className="flex justify-between items-start">
                         <div>
                           <h4 className="font-semibold text-stone-800">
-                            {huntingData.states[opp.state].name} - {opp.species.charAt(0).toUpperCase() + opp.species.slice(1)}
+                            {huntingData.states[opp.state]?.name || opp.state} - {opp.species?.charAt(0).toUpperCase() + opp.species?.slice(1) || 'Unknown Species'}
                           </h4>
                           <p className="text-sm text-stone-600">
-                            Unit: {opp.unit.toUpperCase()} | Hunt Type: {opp.huntType.charAt(0).toUpperCase() + opp.huntType.slice(1).replace('-', ' ')}
+                            Unit: {opp.unit?.toUpperCase() || 'N/A'} | Hunt Type: {opp.huntType?.charAt(0).toUpperCase() + opp.huntType?.slice(1).replace('-', ' ') || 'N/A'}
                           </p>
                           {opp.reasoning && (
                             <p className="text-sm text-stone-500 mt-1">{opp.reasoning}</p>
