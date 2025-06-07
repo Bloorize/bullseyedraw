@@ -4,9 +4,9 @@ import { HuntingFormData } from '@/types/hunting';
 export async function POST(request: NextRequest) {
   try {
     const formData: HuntingFormData = await request.json();
-    const apiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
-    if (!apiKey || !apiKey.startsWith('sk-')) {
+    if (!apiKey || apiKey.length < 20) {
       return NextResponse.json(
         { error: 'OpenAI API key not configured' },
         { status: 500 }
