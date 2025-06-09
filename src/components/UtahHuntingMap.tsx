@@ -5,7 +5,10 @@ import { MapContainer, TileLayer, Polygon, Popup, Marker, LayersControl } from '
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { UtahDataService } from '@/lib/utahDataService';
+import { ColoradoDataService } from '@/lib/coloradoDataService';
 import { UtahHuntUnit } from '@/types/hunting';
+import { ColoradoHuntUnit } from '@/lib/coloradoHuntingData';
+import { coloradoHuntingUnitBoundaries } from '@/lib/coloradoBoundaries';
 
 // Fix for default markers in React-Leaflet
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -16,10 +19,13 @@ L.Icon.Default.mergeOptions({
 });
 
 interface UtahHuntingMapProps {
+  selectedState?: string;
   selectedSpecies?: string;
   selectedUnit?: string;
   onUnitSelect?: (unitId: string) => void;
 }
+
+type HuntUnit = UtahHuntUnit | ColoradoHuntUnit;
 
 // Approximate hunting unit boundaries for Utah (simplified polygons)
 // In a real implementation, these would come from GIS data
@@ -144,23 +150,38 @@ const seasonTypeColors: Record<string, string> = {
   'extended-archery': '#2196F3'  // Blue
 };
 
-export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSelect }: UtahHuntingMapProps) {
-  const [units, setUnits] = useState<UtahHuntUnit[]>([]);
-  const [filteredUnits, setFilteredUnits] = useState<UtahHuntUnit[]>([]);
-  const [mapCenter] = useState<[number, number]>([39.5, -111.5]); // Center of Utah
+export default function UtahHuntingMap({ selectedState = 'utah', selectedSpecies, selectedUnit, onUnitSelect }: UtahHuntingMapProps) {
+  const [units, setUnits] = useState<HuntUnit[]>([]);
+  const [filteredUnits, setFilteredUnits] = useState<HuntUnit[]>([]);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([39.5, -111.5]); // Default to Utah center
   const [mapZoom] = useState(7);
   const utahService = UtahDataService.getInstance();
+  const coloradoService = ColoradoDataService.getInstance();
 
   useEffect(() => {
-    // Load all Utah hunting units
-    const allUnits = utahService.getUnitsForSpecies('deer')
-      .concat(utahService.getUnitsForSpecies('elk'))
-      .concat(utahService.getUnitsForSpecies('pronghorn'))
-      .concat(utahService.getUnitsForSpecies('moose'))
-      .concat(utahService.getUnitsForSpecies('bighorn_sheep'))
-      .concat(utahService.getUnitsForSpecies('mountain_goat'))
-      .concat(utahService.getUnitsForSpecies('bison'))
-      .concat(utahService.getUnitsForSpecies('bear'));
+    // Load hunting units based on selected state
+    let allUnits: HuntUnit[] = [];
+    
+    if (selectedState === 'utah') {
+      setMapCenter([39.5, -111.5]); // Center of Utah
+      allUnits = utahService.getUnitsForSpecies('deer')
+        .concat(utahService.getUnitsForSpecies('elk'))
+        .concat(utahService.getUnitsForSpecies('pronghorn'))
+        .concat(utahService.getUnitsForSpecies('moose'))
+        .concat(utahService.getUnitsForSpecies('bighorn_sheep'))
+        .concat(utahService.getUnitsForSpecies('mountain_goat'))
+        .concat(utahService.getUnitsForSpecies('bison'))
+        .concat(utahService.getUnitsForSpecies('bear'));
+    } else if (selectedState === 'colorado') {
+      setMapCenter([39.0, -106.0]); // Center of Colorado
+      allUnits = coloradoService.getUnitsForSpecies('deer')
+        .concat(coloradoService.getUnitsForSpecies('elk'))
+        .concat(coloradoService.getUnitsForSpecies('pronghorn'))
+        .concat(coloradoService.getUnitsForSpecies('moose'))
+        .concat(coloradoService.getUnitsForSpecies('bighorn_sheep'))
+        .concat(coloradoService.getUnitsForSpecies('mountain_goat'))
+        .concat(coloradoService.getUnitsForSpecies('bear'));
+    }
 
     // Remove duplicates (units that have multiple species)
     const uniqueUnits = allUnits.filter((unit, index, self) => 
@@ -168,19 +189,24 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
     );
 
     setUnits(uniqueUnits);
-  }, []);
+  }, [selectedState]);
 
   useEffect(() => {
     // Filter units based on selected species
     if (selectedSpecies) {
-      const speciesUnits = utahService.getUnitsForSpecies(selectedSpecies);
+      let speciesUnits: HuntUnit[] = [];
+      if (selectedState === 'utah') {
+        speciesUnits = utahService.getUnitsForSpecies(selectedSpecies);
+      } else if (selectedState === 'colorado') {
+        speciesUnits = coloradoService.getUnitsForSpecies(selectedSpecies);
+      }
       setFilteredUnits(speciesUnits);
     } else {
       setFilteredUnits(units);
     }
-  }, [selectedSpecies, units]);
+  }, [selectedSpecies, units, selectedState]);
 
-  const getUnitColor = (unit: UtahHuntUnit): string => {
+  const getUnitColor = (unit: HuntUnit): string => {
     if (selectedSpecies) {
       return seasonTypeColors[unit.seasonType] || '#666666';
     }
@@ -189,7 +215,7 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
     return speciesColors[primarySpecies] || '#666666';
   };
 
-  const getUnitOpacity = (unit: UtahHuntUnit): number => {
+  const getUnitOpacity = (unit: HuntUnit): number => {
     if (selectedUnit && unit.unitId === selectedUnit) {
       return 0.8;
     }
@@ -202,7 +228,7 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
     }
   };
 
-  const formatSeasonDates = (unit: UtahHuntUnit): string => {
+  const formatSeasonDates = (unit: HuntUnit): string => {
     if (!unit.seasonDates) return 'Season dates not available';
     
     return Object.entries(unit.seasonDates)
@@ -211,7 +237,14 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
   };
 
   const getUnitCenter = (unitId: string): [number, number] | null => {
-    const boundary = huntingUnitBoundaries[unitId];
+    // Get boundaries based on selected state
+    let boundary: number[][] | undefined;
+    if (selectedState === 'utah') {
+      boundary = huntingUnitBoundaries[unitId];
+    } else if (selectedState === 'colorado') {
+      boundary = coloradoHuntingUnitBoundaries[unitId];
+    }
+    
     if (!boundary || boundary.length === 0) return null;
     
     const lats = boundary.map(coord => coord[0]);
@@ -256,10 +289,20 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
 
         {/* Render hunting unit polygons */}
         {filteredUnits.map((unit) => {
-          const boundary = huntingUnitBoundaries[unit.unitId];
+          // Get boundaries based on selected state
+          let boundary: number[][] | undefined;
+          if (selectedState === 'utah') {
+            boundary = huntingUnitBoundaries[unit.unitId];
+          } else if (selectedState === 'colorado') {
+            boundary = coloradoHuntingUnitBoundaries[unit.unitId];
+          }
+          
           if (!boundary) return null;
 
           const positions: [number, number][] = boundary.map(coord => [coord[0], coord[1]]);
+          
+          // Get the appropriate service for species names
+          const service = selectedState === 'utah' ? utahService : coloradoService;
           
           return (
             <Polygon
@@ -281,7 +324,7 @@ export default function UtahHuntingMap({ selectedSpecies, selectedUnit, onUnitSe
                   <h3 className="font-bold text-lg mb-2">{unit.unitName}</h3>
                   <div className="space-y-1 text-sm">
                     <p><strong>Unit ID:</strong> {unit.unitId}</p>
-                    <p><strong>Species:</strong> {unit.species.map(s => utahService.getSpeciesName(s)).join(', ')}</p>
+                    <p><strong>Species:</strong> {unit.species.map(s => service.getSpeciesName(s)).join(', ')}</p>
                     <p><strong>Hunt Methods:</strong> {unit.huntMethods.join(', ')}</p>
                     <p><strong>Season Type:</strong> {unit.seasonType}</p>
                     {unit.huntCodes && (

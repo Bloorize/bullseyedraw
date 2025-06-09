@@ -3,6 +3,7 @@
 import React, { useState, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { UtahDataService } from '@/lib/utahDataService';
+import { ColoradoDataService } from '@/lib/coloradoDataService';
 
 // Dynamically import the map component to avoid SSR issues with Leaflet
 const UtahHuntingMap = dynamic(() => import('@/components/UtahHuntingMap'), {
@@ -18,12 +19,32 @@ const UtahHuntingMap = dynamic(() => import('@/components/UtahHuntingMap'), {
 });
 
 export default function MapPage() {
+  const [selectedState, setSelectedState] = useState<string>('utah');
   const [selectedSpecies, setSelectedSpecies] = useState<string>('');
   const [selectedUnit, setSelectedUnit] = useState<string>('');
   const [unitDetails, setUnitDetails] = useState<any>(null);
   
   const utahService = UtahDataService.getInstance();
-  const species = utahService.getAvailableSpecies();
+  const coloradoService = ColoradoDataService.getInstance();
+  
+  // Get species based on selected state
+  const getSpeciesForState = (state: string) => {
+    if (state === 'utah') {
+      return utahService.getAvailableSpecies();
+    } else if (state === 'colorado') {
+      return coloradoService.getAvailableSpecies();
+    }
+    return [];
+  };
+  
+  const species = getSpeciesForState(selectedState);
+
+  const handleStateChange = (state: string) => {
+    setSelectedState(state);
+    setSelectedSpecies('');
+    setSelectedUnit('');
+    setUnitDetails(null);
+  };
 
   const handleSpeciesChange = (speciesValue: string) => {
     setSelectedSpecies(speciesValue);
@@ -33,7 +54,12 @@ export default function MapPage() {
 
   const handleUnitSelect = (unitId: string) => {
     setSelectedUnit(unitId);
-    const unit = utahService.getUnitById(unitId);
+    let unit;
+    if (selectedState === 'utah') {
+      unit = utahService.getUnitById(unitId);
+    } else if (selectedState === 'colorado') {
+      unit = coloradoService.getUnitById(unitId);
+    }
     setUnitDetails(unit);
   };
 
@@ -50,9 +76,9 @@ export default function MapPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Utah Hunting Units Map</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Interactive Hunting Units Map</h1>
               <p className="mt-2 text-gray-600">
-                Interactive map showing hunting unit boundaries, species, and season information
+                Interactive map showing hunting unit boundaries, species, and season information for multiple states
               </p>
             </div>
             <div className="flex space-x-4">
@@ -75,6 +101,21 @@ export default function MapPage() {
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Map Controls</h3>
                 
+                {/* State Selector */}
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Select State
+                  </label>
+                  <select
+                    value={selectedState}
+                    onChange={(e) => handleStateChange(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="utah">Utah</option>
+                    <option value="colorado">Colorado</option>
+                  </select>
+                </div>
+                
                 {/* Species Filter */}
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -86,9 +127,12 @@ export default function MapPage() {
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                     <option value="">All Species</option>
-                    {species.map((species) => (
-                      <option key={species} value={species}>
-                        {utahService.getSpeciesName(species)}
+                    {species.map((speciesKey) => (
+                      <option key={speciesKey} value={speciesKey}>
+                        {selectedState === 'utah' 
+                          ? utahService.getSpeciesName(speciesKey)
+                          : coloradoService.getSpeciesName(speciesKey)
+                        }
                       </option>
                     ))}
                   </select>
@@ -110,11 +154,19 @@ export default function MapPage() {
                 <h4 className="text-md font-medium text-gray-900 mb-3">Map Statistics</h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
+                    <span className="text-gray-600">State:</span>
+                    <span className="font-medium capitalize">{selectedState}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Total Units:</span>
                     <span className="font-medium">
                       {selectedSpecies 
-                        ? utahService.getUnitsForSpecies(selectedSpecies).length
-                        : utahService.getAllUnits().length
+                        ? (selectedState === 'utah' 
+                            ? utahService.getUnitsForSpecies(selectedSpecies).length
+                            : coloradoService.getUnitsForSpecies(selectedSpecies).length)
+                        : (selectedState === 'utah' 
+                            ? utahService.getAllUnits().length
+                            : coloradoService.getAllUnits().length)
                       }
                     </span>
                   </div>
@@ -122,12 +174,20 @@ export default function MapPage() {
                     <>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Species:</span>
-                        <span className="font-medium">{utahService.getSpeciesName(selectedSpecies)}</span>
+                        <span className="font-medium">
+                          {selectedState === 'utah' 
+                            ? utahService.getSpeciesName(selectedSpecies)
+                            : coloradoService.getSpeciesName(selectedSpecies)
+                          }
+                        </span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-gray-600">Hunt Methods:</span>
                         <span className="font-medium">
-                          {utahService.getHuntMethodsForSpecies(selectedSpecies).length}
+                          {selectedState === 'utah' 
+                            ? utahService.getHuntMethodsForSpecies(selectedSpecies).length
+                            : coloradoService.getHuntMethodsForSpecies(selectedSpecies).length
+                          }
                         </span>
                       </div>
                     </>
@@ -156,7 +216,7 @@ export default function MapPage() {
               <div className="mb-4">
                 <h3 className="text-lg font-semibold text-gray-900">Interactive Hunting Units Map</h3>
                 <p className="text-sm text-gray-600 mt-1">
-                  Click on hunting units to view detailed information. Use the layer control to switch map views.
+                  Select a state, then click on hunting units to view detailed information. Use the layer control to switch map views.
                 </p>
               </div>
               
@@ -169,6 +229,7 @@ export default function MapPage() {
                 </div>
               }>
                 <UtahHuntingMap
+                  selectedState={selectedState}
                   selectedSpecies={selectedSpecies}
                   selectedUnit={selectedUnit}
                   onUnitSelect={handleUnitSelect}
