@@ -55,7 +55,7 @@ export const huntingData: HuntingData = {
           units: {
             fourmile: { name: "Four Mile", quality: "Good", access: "Good" }
           },
-          huntTypes: ["dates", "sex", "hunt-codes", "list"]
+          huntTypes: ["archery", "rifle", "muzzleloader"]
         },
         elk: {
           units: {
@@ -91,7 +91,7 @@ export const huntingData: HuntingData = {
             unit231: { name: "Unit 231", quality: "High", access: "Good" },
             unit74: { name: "Unit 74", quality: "High", access: "Good" }
           },
-          huntTypes: ["valid", "dates", "sex", "hunt-code", "list"]
+          huntTypes: ["archery", "rifle", "muzzleloader"]
         },
         antelope: {
           units: {
@@ -112,13 +112,13 @@ export const huntingData: HuntingData = {
             unit33: { name: "Unit 33", quality: "Good", access: "Good" },
             unit104: { name: "Unit 104", quality: "Good", access: "Good" }
           },
-          huntTypes: ["valid", "sex", "hunt-code", "list", "dates"]
+          huntTypes: ["archery", "rifle"]
         },
         moose: {
           units: {
             unit104: { name: "Unit 104", quality: "Premium", access: "Difficult" }
           },
-          huntTypes: ["valid", "dates", "sex", "hunt-code", "list"]
+          huntTypes: ["rifle"]
         },
         bear: {
           units: {
@@ -129,7 +129,7 @@ export const huntingData: HuntingData = {
             unit121: { name: "Unit 121", quality: "Good", access: "Good" },
             unit123: { name: "Unit 123", quality: "Good", access: "Good" }
           },
-          huntTypes: ["dates", "sex", "hunt-code", "list", "valid"]
+          huntTypes: ["archery", "rifle"]
         }
       }
     },
