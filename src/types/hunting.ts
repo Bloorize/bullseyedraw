@@ -166,4 +166,51 @@ export interface Recommendation {
 export interface ChartDataPoint {
   pointLevel: string;
   odds: number;
+}
+
+// New interfaces for Utah GIS integration
+export interface UtahHuntUnit {
+  unitId: string;
+  unitName: string;
+  species: string[];
+  huntMethods: string[]; // archery, rifle, muzzleloader, etc.
+  seasonType: string; // general, limited-entry, extended-archery, etc.
+  boundaries?: {
+    type: 'Polygon' | 'MultiPolygon';
+    coordinates: number[][][];
+  };
+  huntCodes?: string[];
+  seasonDates?: {
+    [method: string]: {
+      start: string;
+      end: string;
+    };
+  };
+  restrictions?: string[];
+  landOwnership?: {
+    public: number;
+    private: number;
+    state: number;
+  };
+}
+
+export interface GISDataSource {
+  endpoint: string;
+  layerId: string;
+  lastUpdated?: Date;
+  cacheExpiry?: number; // hours
+}
+
+export interface UtahHuntingData {
+  units: UtahHuntUnit[];
+  lastSync: Date;
+  dataSource: GISDataSource;
+  species: {
+    [key: string]: {
+      name: string;
+      methods: string[];
+      generalSeasonUnits: string[];
+      limitedEntryUnits: string[];
+    };
+  };
 } 

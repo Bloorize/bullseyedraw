@@ -122,6 +122,12 @@ export default function HuntingCalculator() {
               >
                 Strategy
               </button>
+              <a
+                href="/map"
+                className="px-4 py-2 rounded-lg font-medium transition-colors bg-blue-600 text-white hover:bg-blue-700 shadow-md"
+              >
+                🗺️ Interactive Map
+              </a>
             </div>
           </div>
 

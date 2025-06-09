@@ -4,50 +4,47 @@ import type {
   PointStrategy,
   StrategyCriteria
 } from '@/types/hunting';
+import { UtahDataService } from './utahDataService';
+
+// Initialize Utah data service
+const utahService = UtahDataService.getInstance();
 
 export const huntingData: HuntingData = {
   states: {
     utah: {
       name: "Utah",
       species: {
-        elk: {
-          units: {
-            beaver: { name: "Beaver", quality: "High", access: "Good" },
-            east: { name: "East", quality: "High", access: "Good" },
-            north: { name: "North", quality: "High", access: "Good" },
-            south: { name: "South", quality: "High", access: "Good" }
-          },
-          huntTypes: ["archery", "muzzleloader", "rifle"]
-        },
         deer: {
-          units: {
-            beaver: { name: "Beaver", quality: "Good", access: "Good" },
-            east: { name: "East", quality: "Good", access: "Good" },
-            north: { name: "North", quality: "Good", access: "Good" },
-            south: { name: "South", quality: "Good", access: "Good" }
-          },
-          huntTypes: ["archery", "muzzleloader", "rifle"]
+          units: utahService.getLegacyUnits("deer"),
+          huntTypes: utahService.getLegacyHuntTypes("deer")
         },
-        antelope: {
-          units: {
-            beaver: { name: "Beaver", quality: "Good", access: "Good" },
-            book: { name: "Book", quality: "Good", access: "Good" }
-          },
-          huntTypes: ["archery", "muzzleloader"]
+        elk: {
+          units: utahService.getLegacyUnits("elk"),
+          huntTypes: utahService.getLegacyHuntTypes("elk")
         },
-        goat: {
-          units: {
-            beaver: { name: "Beaver", quality: "Premium", access: "Difficult" },
-            bearsprings: { name: "Bear Springs", quality: "Premium", access: "Difficult" },
-            nebo: { name: "Nebo", quality: "Premium", access: "Difficult" }
-          },
-          huntTypes: ["any-legal-weapon"]
+        pronghorn: {
+          units: utahService.getLegacyUnits("pronghorn"),
+          huntTypes: utahService.getLegacyHuntTypes("pronghorn")
+        },
+        moose: {
+          units: utahService.getLegacyUnits("moose"),
+          huntTypes: utahService.getLegacyHuntTypes("moose")
+        },
+        bighorn_sheep: {
+          units: utahService.getLegacyUnits("bighorn_sheep"),
+          huntTypes: utahService.getLegacyHuntTypes("bighorn_sheep")
+        },
+        mountain_goat: {
+          units: utahService.getLegacyUnits("mountain_goat"),
+          huntTypes: utahService.getLegacyHuntTypes("mountain_goat")
         },
         bison: {
-          units: {
-            antelopeisland: { name: "Antelope Island", quality: "Premium", access: "Good" }
-          },
-          huntTypes: ["any-legal-weapon"]
+          units: utahService.getLegacyUnits("bison"),
+          huntTypes: utahService.getLegacyHuntTypes("bison")
+        },
+        bear: {
+          units: utahService.getLegacyUnits("bear"),
+          huntTypes: utahService.getLegacyHuntTypes("bear")
         }
       }
     },
