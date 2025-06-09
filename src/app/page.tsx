@@ -7,6 +7,7 @@ import { useHuntingCalculator } from '@/hooks/useHuntingCalculator';
 import { DataUtils } from '@/lib/dataUtils';
 import { huntingData } from '@/lib/huntingData';
 import { AIChat } from '@/components/AIChat';
+import IntegratedHuntingCalculator from '@/components/IntegratedHuntingCalculator';
 import type { State, Species, HuntStats } from '@/types/hunting';
 
 export default function HuntingCalculator() {
@@ -128,6 +129,12 @@ export default function HuntingCalculator() {
               >
                 🗺️ Interactive Map
               </a>
+              <a
+                href="/integrated-demo"
+                className="px-4 py-2 rounded-lg font-medium transition-colors bg-green-600 text-white hover:bg-green-700 shadow-md"
+              >
+                ✨ New: Integrated Demo
+              </a>
             </div>
           </div>
 
@@ -192,6 +199,11 @@ export default function HuntingCalculator() {
 
         {/* Calculator Form */}
         {activeTab === 'calculator' && (
+          <IntegratedHuntingCalculator />
+        )}
+
+        {/* Legacy Calculator Form (Hidden) */}
+        {false && activeTab === 'calculator' && (
           <section className="bg-white rounded-xl shadow-lg border border-stone-200 p-8 mb-8">
             <h2 className="text-2xl font-bold text-stone-800 mb-6 pb-4 border-b-2 border-amber-600">
               Draw Odds Calculator
@@ -403,11 +415,11 @@ export default function HuntingCalculator() {
                   </div>
                 )}
 
-                {calculationResult.alternativeOptions && calculationResult.alternativeOptions.length > 0 && (
+                {(calculationResult.alternativeOptions || []).length > 0 && (
                   <div className="mt-6">
                     <h4 className="font-semibold text-stone-800 mb-3">Alternative Options:</h4>
                     <div className="space-y-2">
-                      {calculationResult.alternativeOptions.map((option, idx) => (
+                      {(calculationResult.alternativeOptions || []).map((option, idx) => (
                         <div key={idx} className="p-3 bg-white rounded-lg border border-stone-200">
                           <div className="flex justify-between items-start">
                             <div>
