@@ -88,6 +88,7 @@ export const huntingData: HuntingData = {
             unit71: { name: "Unit 71", quality: "High", access: "Good" },
             unit72: { name: "Unit 72", quality: "High", access: "Good" },
             unit73: { name: "Unit 73", quality: "High", access: "Good" },
+            unit231: { name: "Unit 231", quality: "High", access: "Good" },
             unit74: { name: "Unit 74", quality: "High", access: "Good" }
           },
           huntTypes: ["valid", "dates", "sex", "hunt-code", "list"]
